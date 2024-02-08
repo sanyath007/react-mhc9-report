@@ -26,3 +26,13 @@ body {
     font-family: 'Poppins', sans-serif;
     font-family: 'Prompt', sans-serif;
 }
+
+footer {
+    height: auto;
+    width: 100%;
+    background: #1d684a;
+}
+
+footer .footer-bottom {
+    background: #47484d;
+}

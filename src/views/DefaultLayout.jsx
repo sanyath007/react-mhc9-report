@@ -1,11 +1,17 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Footer from '../components/Footer'
 
 const DefaultLayout = () => {
     return (
-        <section className="flex justify-center min-h-[640px]">
-            <Outlet />
-        </section>
+        <div>
+
+            <section className="flex justify-center min-h-[680px]">
+                <Outlet />
+            </section>
+
+            <Footer />
+        </div>
     )
 }
 
