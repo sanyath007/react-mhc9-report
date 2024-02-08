@@ -2,9 +2,9 @@
 
 function App() {
   return (
-    <>
-      <h1>Hello World!!</h1>
-    </>
+    <div className="flex p-4">
+      <h1 className="text-lg font-bold underline">Hello World!!</h1>
+    </div>
   )
 }
 
