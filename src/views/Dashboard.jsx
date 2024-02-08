@@ -55,6 +55,7 @@ const Dashboard = () => {
                         <StatCard
                             title="จำนวนผู้ตอบแบบประเมิน Mental Health Checkin"
                             value={numberToCurrency(checkinCount)}
+                            link={'/checkins'}
                             bgColor={'bg-indigo-200'}
                         />
                     </Col>
