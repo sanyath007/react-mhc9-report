@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom'
 
 const DefaultLayout = () => {
     return (
-        <div className="border">
+        <section className="flex justify-center min-h-[640px]">
             <Outlet />
-        </div>
+        </section>
     )
 }
 
