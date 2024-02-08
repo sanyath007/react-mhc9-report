@@ -28,11 +28,16 @@ const Footer = () => {
                 </div>
             </div>
             <div className="footer-bottom text-white py-3 flex justify-center">
-                <div className="text-sm">
-                    ©2020 ศูนย์สุขภาพจิตที่ 9 All Rights Reserved | DESIGNED BY 
-                    <a href="https://www.query-studio.com" target="_blank" rel="noreferrer">
-                        นายสัญญา ธรรมวงษ์
-                    </a>
+                <div className="flex md:flex-row max-md:flex-col md:justify-center max-md:items-center gap-1 text-sm">
+                    <span className="md:after:content-['|']">
+                        <span className="md:mr-1">©2020 ศูนย์สุขภาพจิตที่ 9 All Rights Reserved</span>
+                    </span>
+                    <span>
+                        DESIGNED BY 
+                        <a href="https://www.query-studio.com" target="_blank" rel="noreferrer" className="ml-1">
+                            นายสัญญา ธรรมวงษ์
+                        </a>
+                    </span>
                 </div>
             </div>
         </footer>
