@@ -39,10 +39,10 @@ const CheckinList = () => {
     return (
         <div className="container py-3 px-4 w-full bg-white border">
             <Breadcrumb>
-                <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-                {/* <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-                    Library
-                </Breadcrumb.Item> */}
+                <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+                <Breadcrumb.Item href="/checkins">
+                    Mental Health Checkin
+                </Breadcrumb.Item>
                 <Breadcrumb.Item active>รายการติดตาม</Breadcrumb.Item>
             </Breadcrumb>
 
