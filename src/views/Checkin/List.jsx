@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Col, Row } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { Breadcrumb, Pagination } from 'react-bootstrap'
 import api from '../../api'
 
 const CheckinList = () => {
     const [patients, setPatients] = useState([]);
+    const [pager, setPager] = useState(null);
 
     useEffect(() => {
         getCheckins();
@@ -13,10 +14,13 @@ const CheckinList = () => {
 
     const getCheckins = async () => {
         try {
-            const res = await api.get('/api/checkins');
-            setPatients(res.data)
+            const res = await api.get('/api/checkins?page=10');
+
+            const { data, ...paginated } = res.data;
+            setPatients(data);
+            setPager(paginated);
         } catch (error) {
-            
+            console.log(error);
         }
     };
 
@@ -53,30 +57,37 @@ const CheckinList = () => {
                     <thead>
                         <tr>
                             <th className="w-[4%] text-center">#</th>
-                            <th className="w-[10%] text-center">วันที่ประเมิน</th>
+                            <th className="w-[8%] text-center">วันที่ประเมิน</th>
                             <th>ชื่อ-สกุล</th>
                             <th className="w-[5%] text-center">อายุ</th>
                             <th className="w-[5%] text-center">เพศ</th>
-                            <th className="w-[30%] text-center">ที่อยู่</th>
+                            <th className="w-[25%] text-center">ที่อยู่</th>
                             <th className="w-[20%] text-center">กลุ่มรายงาน</th>
-                            <th className="w-[8%] text-center">ติดตาม</th>
+                            <th className="w-[4%] text-center">c_trace</th>
+                            <th className="w-[4%] text-center">trace</th>
+                            <th className="w-[4%] text-center">ok</th>
+                            <th className="w-[6%] text-center">ติดตาม</th>
                         </tr>
                     </thead>
                     <tbody>
                         {patients && patients.map((patient, index) => (
                             <tr className="text-sm font-thin" key={patient.id}>
-                                <td className="text-center">{index+1}</td>
-                                <td className="text-center">{typeof patient.data_create === 'object' ? '' : patient.data_create}</td>
+                                <td className="text-center">{pager.from+index}</td>
+                                <td className="text-center">{patient.reg_date}</td>
                                 <td>{patient.risk_name+ ' ' +patient.risk_surname}</td>
                                 <td className="text-center">{patient.gender}</td>
                                 <td className="text-center">{patient.age}</td>
                                 <td>{patient.address+ ' อ.' +patient.name_amphure+ ' จ.' +patient.name_province}</td>
                                 <td>{getRiskGroup(patient)}</td>
+                                <td className="text-center">{patient.c_trace}</td>
+                                <td className="text-center">{patient.trace}</td>
+                                <td className="text-center">{patient.ok}</td>
                                 <td className="text-center">
                                     <a 
                                         href={`https://checkin.dmh.go.th/trace/index.php?id=${patient.id}&date_data=2024-02-07%2020:51:07&risk_name=${patient.risk_name}&risk_surname=${patient.risk_surname}&address=${patient.address}&amp_name=${patient.name_amphure}&dis_name_th=${patient.name_district}&province=${patient.name_province}&age=${patient.age}&risk_group=${getRiskGroup(patient)}&risk_tel=${patient.risk_tel}&2q=&9q=&8q=&burnout=`}
                                         className="btn btn-primary btn-sm"
                                         target="_blank"
+                                        rel="noreferrer"
                                     >
                                         ติดตาม
                                     </a>
@@ -85,6 +96,26 @@ const CheckinList = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {pager && (
+                    <Pagination>
+                        <Pagination.First />
+                        <Pagination.Prev />
+                        <Pagination.Item>{1}</Pagination.Item>
+                        <Pagination.Ellipsis />
+
+                        <Pagination.Item>{10}</Pagination.Item>
+                        <Pagination.Item>{11}</Pagination.Item>
+                        <Pagination.Item active>{12}</Pagination.Item>
+                        <Pagination.Item>{13}</Pagination.Item>
+                        <Pagination.Item disabled>{14}</Pagination.Item>
+
+                        <Pagination.Ellipsis />
+                        <Pagination.Item>{20}</Pagination.Item>
+                        <Pagination.Next />
+                        <Pagination.Last />
+                    </Pagination>
+                )}
             </div>
         </div>
     )
