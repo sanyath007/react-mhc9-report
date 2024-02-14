@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react'
-import { Breadcrumb, Pagination } from 'react-bootstrap'
+import { Breadcrumb } from 'react-bootstrap';
 import api from '../../api'
+import Pagination from '../../components/Pagination';
 
 const CheckinList = () => {
     const [patients, setPatients] = useState([]);
     const [pager, setPager] = useState(null);
+    const [endpoint, setEndpoint] = useState('');
 
     useEffect(() => {
-        getCheckins();
+        getCheckins(endpoint);
+    }, [endpoint]);
 
-        return () => getCheckins();
-    }, []);
-
-    const getCheckins = async () => {
+    const getCheckins = async (url) => {
         try {
-            const res = await api.get('/api/checkins?page=10');
-
+            const res = await api.get(url === '' ? '/api/checkins?page=' : url);
             const { data, ...paginated } = res.data;
+
             setPatients(data);
             setPager(paginated);
         } catch (error) {
@@ -97,25 +97,7 @@ const CheckinList = () => {
                     </tbody>
                 </table>
 
-                {pager && (
-                    <Pagination>
-                        <Pagination.First />
-                        <Pagination.Prev />
-                        <Pagination.Item>{1}</Pagination.Item>
-                        <Pagination.Ellipsis />
-
-                        <Pagination.Item>{10}</Pagination.Item>
-                        <Pagination.Item>{11}</Pagination.Item>
-                        <Pagination.Item active>{12}</Pagination.Item>
-                        <Pagination.Item>{13}</Pagination.Item>
-                        <Pagination.Item disabled>{14}</Pagination.Item>
-
-                        <Pagination.Ellipsis />
-                        <Pagination.Item>{20}</Pagination.Item>
-                        <Pagination.Next />
-                        <Pagination.Last />
-                    </Pagination>
-                )}
+                {pager && <Pagination pager={pager} onPageClick={(url) => setEndpoint(url)} />}
             </div>
         </div>
     )
