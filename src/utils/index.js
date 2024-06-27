@@ -26,3 +26,13 @@ export const toLongTHDateWithBE = (dateStr) => {
 
     return `${day} ${MONTH_NAMES[parseInt(month) - 1]} พ.ศ. ${parseInt(year, 10) + 543}`;
 }
+
+export const generateQueryString = (inputs) => {
+    let queryStr = '';
+
+    for (const [key, val] of Object.entries(inputs)) {
+        queryStr += `&${key}=${val}`;
+    }
+
+    return queryStr;
+};

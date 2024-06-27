@@ -2,22 +2,33 @@ import { useEffect, useState } from 'react'
 import { Breadcrumb } from 'react-bootstrap';
 import { FaHandsHelping, FaPhoneSquareAlt, FaRegTimesCircle } from 'react-icons/fa'
 import api from '../../api'
-import { toShortTHDate } from '../../utils'
+import { toShortTHDate, generateQueryString } from '../../utils'
 import Pagination from '../../components/Pagination';
 import moment from 'moment';
+import FilteringInputs from './FilteringInputs';
+
+const initialFilters = {
+    changwat: '',
+    amphur: '',
+    tambon: '',
+    sdate: '',
+    edate: '',
+    age_range: '',
+};
 
 const CheckinList = () => {
     const [patients, setPatients] = useState([]);
     const [pager, setPager] = useState(null);
     const [endpoint, setEndpoint] = useState('');
+    const [params, setParams] = useState(generateQueryString(initialFilters));
 
     useEffect(() => {
-        getCheckins(endpoint);
-    }, [endpoint]);
+        getCheckins(endpoint == '' ? `/api/checkins?page=${params}` : `${endpoint}${params}`);
+    }, [endpoint, params]);
 
     const getCheckins = async (url) => {
         try {
-            const res = await api.get(url === '' ? '/api/checkins?page=' : url);
+            const res = await api.get(url);
             const { data, ...paginated } = res.data;
 
             setPatients(data);
@@ -41,7 +52,7 @@ const CheckinList = () => {
         else if (patient.age >= 60 && [1,2,5].includes(patient.type_eng)) return "7.3 ผู้สูงอายุ \n (กลุ่มเปราะบางทางสังคม)";
         else if ([1,2,5].includes(patient.type_eng)) return "7.4 ผู้พิการทางกาย \n (กลุ่มเปราะบางทางสังคม)";
         else return "1.ประชาชนทั่วไป";
-    }
+    };
 
     return (
         <div className="container py-3 px-4 w-full bg-white border">
@@ -55,6 +66,8 @@ const CheckinList = () => {
 
             <div className="content">
                 <h1 className="text-2xl font-bold mb-2">รายการติดตาม</h1>
+
+                <FilteringInputs initialFilters={initialFilters} onFilter={(queryStr) => setParams(queryStr)} />
 
                 <table className="table table-bordered text-xs">
                     <thead>
@@ -92,8 +105,8 @@ const CheckinList = () => {
                                     {patient.risk_name+ ' ' +patient.risk_surname}
                                     <p className="flex flex-row gap-1 items-center"><FaPhoneSquareAlt size={'12px'} /> {patient.risk_tel}</p>
                                 </td>
-                                <td className="text-center">{patient.gender}</td>
                                 <td className="text-center">{patient.age}</td>
+                                <td className="text-center">{patient.gender}</td>
                                 <td>{patient.address+ ' อ.' +patient.name_amphure+ ' จ.' +patient.name_province}</td>
                                 <td>{getRiskGroup(patient)}</td>
                                 <td className="text-center">{patient.c_trace}</td>
