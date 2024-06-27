@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Breadcrumb } from 'react-bootstrap';
+import { FaHandsHelping, FaPhoneSquareAlt, FaRegTimesCircle } from 'react-icons/fa'
 import api from '../../api'
+import { toShortTHDate } from '../../utils'
 import Pagination from '../../components/Pagination';
+import moment from 'moment';
 
 const CheckinList = () => {
     const [patients, setPatients] = useState([]);
@@ -51,16 +54,17 @@ const CheckinList = () => {
             </Breadcrumb>
 
             <div className="content">
-                <h1 className="text-3xl font-bold mb-2">รายการติดตาม</h1>
+                <h1 className="text-2xl font-bold mb-2">รายการติดตาม</h1>
 
-                <table className="table table-bordered">
+                <table className="table table-bordered text-xs">
                     <thead>
                         <tr>
                             <th className="w-[4%] text-center">#</th>
+                            <th className="w-[4%] text-center">ช่วยเหลือ</th>
                             <th className="w-[8%] text-center">วันที่ประเมิน</th>
                             <th>ชื่อ-สกุล</th>
-                            <th className="w-[5%] text-center">อายุ</th>
-                            <th className="w-[5%] text-center">เพศ</th>
+                            <th className="w-[4%] text-center">อายุ</th>
+                            <th className="w-[4%] text-center">เพศ</th>
                             <th className="w-[25%] text-center">ที่อยู่</th>
                             <th className="w-[20%] text-center">กลุ่มรายงาน</th>
                             <th className="w-[4%] text-center">c_trace</th>
@@ -71,10 +75,23 @@ const CheckinList = () => {
                     </thead>
                     <tbody>
                         {patients && patients.map((patient, index) => (
-                            <tr className="text-sm font-thin" key={patient.id}>
+                            <tr className="font-thin" key={patient.id}>
                                 <td className="text-center">{pager.from+index}</td>
-                                <td className="text-center">{patient.reg_date}</td>
-                                <td>{patient.risk_name+ ' ' +patient.risk_surname}</td>
+                                <td className="text-center">
+                                    <div className="flex justify-center">
+                                        {patient.ok === '1'
+                                            ? <span className="text-success"><FaHandsHelping size={'20px'} /></span>
+                                            : <span className="text-danger"><FaRegTimesCircle size={'16px'} /></span>
+                                        }
+                                    </div>
+                                </td>
+                                <td className="text-center">
+                                    {toShortTHDate(moment(patient.reg_date).format('YYYY-MM-DD'))} {moment(patient.reg_date).format('HH:MM')} น.
+                                </td>
+                                <td>
+                                    {patient.risk_name+ ' ' +patient.risk_surname}
+                                    <p className="flex flex-row gap-1 items-center"><FaPhoneSquareAlt size={'12px'} /> {patient.risk_tel}</p>
+                                </td>
                                 <td className="text-center">{patient.gender}</td>
                                 <td className="text-center">{patient.age}</td>
                                 <td>{patient.address+ ' อ.' +patient.name_amphure+ ' จ.' +patient.name_province}</td>
@@ -85,7 +102,7 @@ const CheckinList = () => {
                                 <td className="text-center">
                                     <a 
                                         href={`https://checkin.dmh.go.th/trace/index.php?id=${patient.id}&date_data=2024-02-07%2020:51:07&risk_name=${patient.risk_name}&risk_surname=${patient.risk_surname}&address=${patient.address}&amp_name=${patient.name_amphure}&dis_name_th=${patient.name_district}&province=${patient.name_province}&age=${patient.age}&risk_group=${getRiskGroup(patient)}&risk_tel=${patient.risk_tel}&2q=&9q=&8q=&burnout=`}
-                                        className="btn btn-primary btn-sm"
+                                        className="btn btn-primary btn-sm text-xs"
                                         target="_blank"
                                         rel="noreferrer"
                                     >
