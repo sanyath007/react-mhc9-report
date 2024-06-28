@@ -37,6 +37,7 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
         const amphurs = formData?.amphurs.filter(amp => amp.chw_id == id);
 
         setFilteredAmphurs(amphurs);
+        setFilters(prevState => ({ ...prevState, amphur: '', tambon: '' }));
     };
 
     const filterTambonsByAmphur = (amphur) => {
@@ -44,6 +45,7 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
         const tambons = formData?.tambons.filter(tam => tam.amp_id == id);
 
         setFilteredTambons(tambons);
+        setFilters(prevState => ({ ...prevState, tambon: '' }));
     };
 
     return (
@@ -127,9 +129,12 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
                         className="form-control text-xs"
                     >
                         <option value="">-- เลือกช่วงอายุ --</option>
-                        <option value="13-15">13-15 ปี</option>
-                        <option value="16-18">16-18 ปี</option>
-                        <option value="19-22">19-22 ปี</option>
+                        <option value="<20">น้อยกว่า 20 ปี</option>
+                        <option value="20-29">20-29 ปี</option>
+                        <option value="30-39">30-39 ปี</option>
+                        <option value="40-49">40-49 ปี</option>
+                        <option value="50-59">50-59 ปี</option>
+                        <option value="60>">60 ปีขึ้นไป</option>
                     </select>
                 </Col>
             </Row>
