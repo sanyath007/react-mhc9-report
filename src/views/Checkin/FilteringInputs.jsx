@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { generateQueryString } from '../../utils'
+import { useGetInitialFormDataQuery } from '../../features/services/checkinApi';
+
+const initialFormData = {
+    changwats: [],
+    amphurs: [],
+    tambons: [],
+};
 
 const FilteringInputs = ({ initialFilters, onFilter }) => {
     const [filters, setFilters] = useState(initialFilters);
-    // const { data: formData = initialFormData, isLoading } = useGetInitialFormDataQuery();
+    const { data: formData = initialFormData, isLoading } = useGetInitialFormDataQuery();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
