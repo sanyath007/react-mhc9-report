@@ -6,6 +6,7 @@ import { toShortTHDate, generateQueryString } from '../../utils'
 import Pagination from '../../components/Pagination';
 import moment from 'moment';
 import FilteringInputs from './FilteringInputs';
+import Assessment from './Assessment';
 
 const initialFilters = {
     changwat: '',
@@ -82,11 +83,12 @@ const CheckinList = () => {
                             <th>ชื่อ-สกุล</th>
                             <th className="w-[4%] text-center">อายุ</th>
                             <th className="w-[4%] text-center">เพศ</th>
-                            <th className="w-[25%] text-center">ที่อยู่</th>
-                            <th className="w-[20%] text-center">กลุ่มรายงาน</th>
-                            <th className="w-[4%] text-center">c_trace</th>
+                            <th className="w-[20%] text-center">ที่อยู่</th>
+                            <th className="w-[15%] text-center">กลุ่มรายงาน</th>
+                            <th className="w-[20%] text-center">ผลการประเมิน</th>
+                            {/* <th className="w-[4%] text-center">c_trace</th>
                             <th className="w-[4%] text-center">trace</th>
-                            <th className="w-[4%] text-center">ok</th>
+                            <th className="w-[4%] text-center">ok</th> */}
                             <th className="w-[6%] text-center">ติดตาม</th>
                         </tr>
                     </thead>
@@ -106,16 +108,19 @@ const CheckinList = () => {
                                     {toShortTHDate(moment(patient.reg_date).format('YYYY-MM-DD'))} {moment(patient.reg_date).format('HH:MM')} น.
                                 </td>
                                 <td>
-                                    {patient.risk_name+ ' ' +patient.risk_surname}
-                                    <p className="flex flex-row gap-1 items-center"><FaPhoneSquareAlt size={'12px'} /> {patient.risk_tel}</p>
+                                    <p className="font-bold">{patient.risk_name+ ' ' +patient.risk_surname}</p>
+                                    <p className="flex flex-row gap-1 items-center text-primary"><FaPhoneSquareAlt size={'12px'} /> {patient.risk_tel}</p>
                                 </td>
                                 <td className="text-center">{patient.age}</td>
                                 <td className="text-center">{patient.gender}</td>
                                 <td>{patient.address+ ' อ.' +patient.name_amphure+ ' จ.' +patient.name_province}</td>
                                 <td>{getRiskGroup(patient)}</td>
-                                <td className="text-center">{patient.c_trace}</td>
+                                <td className="text-center">
+                                    <Assessment assessment={patient} />
+                                </td>
+                                {/* <td className="text-center">{patient.c_trace}</td>
                                 <td className="text-center">{patient.trace}</td>
-                                <td className="text-center">{patient.ok}</td>
+                                <td className="text-center">{patient.ok}</td> */}
                                 <td className="text-center">
                                     <a 
                                         href={`https://checkin.dmh.go.th/trace/index.php?id=${patient.id}&date_data=2024-02-07%2020:51:07&risk_name=${patient.risk_name}&risk_surname=${patient.risk_surname}&address=${patient.address}&amp_name=${patient.name_amphure}&dis_name_th=${patient.name_district}&province=${patient.name_province}&age=${patient.age}&risk_group=${getRiskGroup(patient)}&risk_tel=${patient.risk_tel}&2q=&9q=&8q=&burnout=`}
