@@ -24,7 +24,11 @@ const CheckinList = () => {
 
     useEffect(() => {
         getCheckins(endpoint == '' ? `/api/checkins?page=${params}` : `${endpoint}${params}`);
-    }, [endpoint, params]);
+    }, [endpoint]);
+
+    useEffect(() => {
+        getCheckins(`/api/checkins?page=${params}`);
+    }, [params]);
 
     const getCheckins = async (url) => {
         try {
@@ -127,7 +131,13 @@ const CheckinList = () => {
                     </tbody>
                 </table>
 
-                {pager && <Pagination pager={pager} onPageClick={(url) => setEndpoint(url)} />}
+                {pager && (
+                    <div className="flex flex-row items-center justify-between">
+                        <div className="text-xs font-thin">หน้าที่ {pager.currentPage} / {pager.lastPage}</div>
+                        <div className="text-xs font-thin">จำนวน {pager.total} รายการ</div>
+                        <Pagination pager={pager} onPageClick={(url) => setEndpoint(url)} />
+                    </div>
+                )}
             </div>
         </div>
     )
