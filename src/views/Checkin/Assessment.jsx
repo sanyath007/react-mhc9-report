@@ -120,12 +120,12 @@ const Assessment = ({ assessment }) => {
             <div>
                 <div className="flex flex-row items-center justify-start gap-1"><b>RQ</b> {renderRQ(assessment.rq1 + assessment.rq2 + assessment.rq3)}</div>
                 <div className="flex flex-row items-center justify-start gap-1"><b>ST5</b> {renderST5(assessment.st_5)}</div>
-                <div className="flex flex-row items-center justify-start gap-1"><b>2Q</b> {render2Q(assessment._2q)}</div>
+                <div className="flex flex-row items-center justify-start gap-1"><b>BO</b> {renderBurnout(assessment.burnout1 + assessment.burnout2 + assessment.burnout3)}</div>
             </div>
             <div>
-                <div className="flex flex-row items-center justify-start gap-1"><b>9Q</b> {render9Q(assessment.depression)}</div>
+                <div className="flex flex-row items-center justify-start gap-1"><b>2Q</b> {render2Q(assessment._2q)}</div>
                 <div className="flex flex-row items-center justify-start gap-1"><b>8Q</b> {render8Q(assessment.sucide)}</div>
-                <div className="flex flex-row items-center justify-start gap-1"><b>BO</b> {renderBurnout(assessment.burnout1 + assessment.burnout2 + assessment.burnout3)}</div>
+                <div className="flex flex-row items-center justify-start gap-1"><b>9Q</b> {render9Q(assessment.depression)}</div>
             </div>
         </div>
     )
