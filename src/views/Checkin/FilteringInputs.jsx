@@ -11,13 +11,15 @@ const initialFormData = {
 
 const FilteringInputs = ({ initialFilters, onFilter }) => {
     const [filters, setFilters] = useState(initialFilters);
+    const [filteredAmphurs, setFilteredAmphurs] = useState([]);
+    const [filteredTambons, setFilteredTambons] = useState([]);
     const { data: formData = initialFormData, isLoading } = useGetInitialFormDataQuery();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        const _filters = { ...filters, [name]: value };
+        const newFilters = { ...filters, [name]: value };
 
-        setFilters(_filters);
+        setFilters(newFilters);
     };
 
     const handleFilter = () => {
@@ -30,6 +32,20 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
         onFilter(generateQueryString(initialFilters));
     };
 
+    const filterAmphursByChangwat = (changwat) => {
+        const [id, name] = changwat.split('-');
+        const amphurs = formData?.amphurs.filter(amp => amp.chw_id == id);
+
+        setFilteredAmphurs(amphurs);
+    };
+
+    const filterTambonsByAmphur = (amphur) => {
+        const [id, name] = amphur.split('-');
+        const tambons = formData?.tambons.filter(tam => tam.amp_id == id);
+
+        setFilteredTambons(tambons);
+    };
+
     return (
         <div className="border rounded-md p-3 my-2">
             <p className="font-bold mb-2">กรองข้อมูล</p>
@@ -39,10 +55,16 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
                     <select
                         name="changwat"
                         value={filters.changwat}
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                            handleInputChange(e);
+                            filterAmphursByChangwat(e.target.value);
+                        }}
                         className="form-control text-xs"
                     >
-                        <option>-- เลือกจังหวัด --</option>
+                        <option value="">-- เลือกจังหวัด --</option>
+                        {(!isLoading && formData) && formData.changwats?.map(chw => (
+                            <option key={chw.id} value={`${chw.id}-${chw.name}`}>{chw.name}</option>
+                        ))}
                     </select>
                 </Col>
                 <Col md={4} className="text-sm">
@@ -50,10 +72,16 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
                     <select
                         name="amphur"
                         value={filters.amphur}
-                        onChange={handleInputChange}
+                        onChange={(e) => {
+                            handleInputChange(e);
+                            filterTambonsByAmphur(e.target.value);
+                        }}
                         className="form-control text-xs"
                     >
                         <option>-- เลือกอำเภอ --</option>
+                        {filteredAmphurs.map(amp => (
+                            <option key={amp.id} value={`${amp.id}-${amp.name}`}>{amp.name}</option>
+                        ))}
                     </select>
                 </Col>
                 <Col md={4} className="text-sm">
@@ -65,6 +93,9 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
                         className="form-control text-xs"
                     >
                         <option>-- เลือกตำบล --</option>
+                        {filteredTambons.map(tam => (
+                            <option key={tam.id} value={`${tam.id}-${tam.name}`}>{tam.name}</option>
+                        ))}
                     </select>
                 </Col>
                 <Col md={4} className="text-sm">
