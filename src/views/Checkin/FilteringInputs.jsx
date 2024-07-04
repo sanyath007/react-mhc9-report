@@ -138,12 +138,12 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
                         className="form-control text-xs"
                     >
                         <option value="">-- เลือกช่วงอายุ --</option>
-                        <option value="<20">น้อยกว่า 20 ปี</option>
+                        <option value="0-20">น้อยกว่า 20 ปี</option>
                         <option value="20-29">20-29 ปี</option>
                         <option value="30-39">30-39 ปี</option>
                         <option value="40-49">40-49 ปี</option>
                         <option value="50-59">50-59 ปี</option>
-                        <option value="60>">60 ปีขึ้นไป</option>
+                        <option value="60-200">60 ปีขึ้นไป</option>
                     </select>
                 </Col>
             </Row>
