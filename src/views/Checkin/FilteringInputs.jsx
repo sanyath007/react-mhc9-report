@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { generateQueryString } from '../../utils'
 import { useGetInitialFormDataQuery } from '../../features/services/checkinApi';
@@ -14,6 +14,15 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
     const [filteredAmphurs, setFilteredAmphurs] = useState([]);
     const [filteredTambons, setFilteredTambons] = useState([]);
     const { data: formData = initialFormData, isLoading } = useGetInitialFormDataQuery();
+
+    useEffect(() => {
+        if (formData && filters.changwat != '') {
+            const [id, name] = filters.changwat.split('-');
+            const amphurs = formData?.amphurs.filter(amp => amp.chw_id == id);
+
+            setFilteredAmphurs(amphurs);
+        }
+    }, [formData]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

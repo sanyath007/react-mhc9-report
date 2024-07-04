@@ -22,16 +22,9 @@ const CheckinList = () => {
     const { amphur, changwat, sdate, edate } = useParams();
     const [patients, setPatients] = useState([]);
     const [pager, setPager] = useState(null);
+    const [filters, setFilters] = useState(changwat ? { ...initialFilters, amphur: amphur != '-' ? amphur : '', changwat, sdate, edate } : initialFilters);
     const [endpoint, setEndpoint] = useState('');
-    const [params, setParams] = useState(
-                                    generateQueryString(changwat ? {
-                                        ...initialFilters,
-                                        amphur: amphur != '-' ? amphur : '',
-                                        changwat,
-                                        sdate,
-                                        edate
-                                    } : initialFilters)
-                                );
+    const [params, setParams] = useState(generateQueryString(filters));
 
     useEffect(() => {
         getCheckins(endpoint == '' ? `/api/checkins?page=${params}` : `${endpoint}${params}`);
@@ -82,7 +75,7 @@ const CheckinList = () => {
             <div className="content">
                 <h1 className="text-2xl font-bold mb-2">รายการติดตาม</h1>
 
-                <FilteringInputs initialFilters={initialFilters} onFilter={(queryStr) => setParams(queryStr)} />
+                <FilteringInputs initialFilters={filters} onFilter={(queryStr) => setParams(queryStr)} />
 
                 <table className="table table-bordered text-xs">
                     <thead>
