@@ -4,12 +4,14 @@ import { Breadcrumb, Col, Row } from 'react-bootstrap'
 import { FaRegArrowAltCircleLeft, FaBatteryEmpty, FaCloudRain, FaCommentDots, FaRegSmile, FaRegUser, FaUserInjured } from 'react-icons/fa'
 import api from '../../api'
 import moment from 'moment'
+import { useGetInitialFormDataQuery } from '../../features/services/checkinApi'
 
 const CheckinSummary = () => {
     const [filters, setFilters] = useState({ sdate: moment().startOf('month').format('YYYY-MM-DD'), edate: moment().endOf('month').format('YYYY-MM-DD') });
     const [sum, setSum] = useState({ st5: 0, depression: 0, sucide: 0, burnout: 0, total: 0, helped: 0 })
     const [areas, setAreas] = useState([]);
     const [areaName, setAreaName] = useState('');
+    const { data: formData, isLoading } = useGetInitialFormDataQuery();
 
     useEffect(() => {
         if (areaName == '') {
@@ -65,6 +67,12 @@ const CheckinSummary = () => {
         });
 
         setSum({ total, st5, depression, sucide, burnout, helped });
+    };
+
+    const getAreaWithId = (name, type) => {
+        const area = formData[type].find(item => item.name.includes(name));
+
+        return `${area.id}-${area.name}`;
     };
 
     return (
@@ -188,7 +196,10 @@ const CheckinSummary = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {areas.map(data => (
+                                {areas.map(data => {
+                                    const linkParams = ('province' in data) ? `${getAreaWithId(data.area, 'amphurs')}/${getAreaWithId(data.province, 'changwats')}` : `''/${getAreaWithId(data.area, 'changwats')}`;
+
+                                    return (
                                     <tr className="font-thin" key={data.area}>
                                         <td className="text-center">
                                             {areaName == ''
@@ -203,12 +214,14 @@ const CheckinSummary = () => {
                                         <td className="text-center">{data.sucide}</td>
                                         <td className="text-center">{data.burnout}</td>
                                         <td className="text-center">
-                                            <Link to={`/checkins/follow-up/${('province' in data) ? `${data.area}/${data.province}` : `''/${data.area}`}`} className="btn btn-danger btn-sm text-xs">
+                                            <Link
+                                                to={`/checkins/follow-up/${linkParams}`}
+                                                className="btn btn-danger btn-sm text-xs">
                                                 ติดตาม
                                             </Link>
                                         </td>
                                     </tr>
-                                ))}
+                                )})}
                                 <tr className="font-bold">
                                     <td className="text-center">รวม</td>
                                     <td className="text-center">{sum.total}</td>
