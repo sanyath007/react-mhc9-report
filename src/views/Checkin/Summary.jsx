@@ -203,7 +203,7 @@ const CheckinSummary = () => {
                                         <td className="text-center">{data.sucide}</td>
                                         <td className="text-center">{data.burnout}</td>
                                         <td className="text-center">
-                                            <Link to={`/checkins/follow-up/${('province' in data) ? `${data.area}/${data.province}` : data.area}`} className="btn btn-danger btn-sm text-xs">
+                                            <Link to={`/checkins/follow-up/${('province' in data) ? `${data.area}/${data.province}` : `''/${data.area}`}`} className="btn btn-danger btn-sm text-xs">
                                                 ติดตาม
                                             </Link>
                                         </td>
