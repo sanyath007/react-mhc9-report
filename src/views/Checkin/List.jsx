@@ -19,11 +19,19 @@ const initialFilters = {
 };
 
 const CheckinList = () => {
-    const { amphur, changwat } = useParams();
+    const { amphur, changwat, sdate, edate } = useParams();
     const [patients, setPatients] = useState([]);
     const [pager, setPager] = useState(null);
     const [endpoint, setEndpoint] = useState('');
-    const [params, setParams] = useState(generateQueryString(changwat ? { ...initialFilters, amphur: amphur != '-' ? amphur : '', changwat } : initialFilters));
+    const [params, setParams] = useState(
+                                    generateQueryString(changwat ? {
+                                        ...initialFilters,
+                                        amphur: amphur != '-' ? amphur : '',
+                                        changwat,
+                                        sdate,
+                                        edate
+                                    } : initialFilters)
+                                );
 
     useEffect(() => {
         getCheckins(endpoint == '' ? `/api/checkins?page=${params}` : `${endpoint}${params}`);
