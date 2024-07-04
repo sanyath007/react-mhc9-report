@@ -20,7 +20,7 @@ const Footer = () => {
                             <SocialIcons />
                         </div>
                     </div>
-                    <ul className="flex md:flex-row max-md:flex-col md:justify-center max-sm:items-start gap-1 text-sm font-thin w-full">
+                    <ul className="flex md:flex-row max-md:flex-col md:justify-center max-sm:items-start gap-1 text-xs font-thin w-full">
                         <li className="md:after:content-['|']"><a href="" className="md:mr-1">นโยบายการคุ้มครองข้อมูล</a></li>
                         <li className="md:after:content-['|']"><a href="" className="md:mr-1">นโยบายการคุ้มครองข้อมูลส่วนบุคคล</a></li>
                         <li><a href="">นโยบายการรักษาความมั่นคงปลอดภัยของเว็บไซต์</a></li>
@@ -33,9 +33,9 @@ const Footer = () => {
                         <span className="md:mr-1">©2020 ศูนย์สุขภาพจิตที่ 9 All Rights Reserved</span>
                     </span>
                     <span>
-                        DESIGNED BY 
+                        By 
                         <a href="https://www.query-studio.com" target="_blank" rel="noreferrer" className="ml-1">
-                            นายสัญญา ธรรมวงษ์
+                            Sanya Thammawong
                         </a>
                     </span>
                 </div>
