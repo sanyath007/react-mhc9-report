@@ -197,7 +197,10 @@ const CheckinSummary = () => {
                             </thead>
                             <tbody>
                                 {areas.map(data => {
-                                    const linkParams = ('province' in data) ? `${getAreaWithId(data.area, 'amphurs')}/${getAreaWithId(data.province, 'changwats')}` : `-/${getAreaWithId(data.area, 'changwats')}`;
+                                    let linkParams = ('province' in data)
+                                                        ? `${getAreaWithId(data.area, 'amphurs')}/${getAreaWithId(data.province, 'changwats')}`
+                                                        : `-/${getAreaWithId(data.area, 'changwats')}`;
+                                    linkParams += `/${filters.sdate}/${filters.edate}`
 
                                     return (
                                     <tr className="font-thin" key={data.area}>
