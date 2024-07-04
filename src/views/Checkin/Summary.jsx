@@ -70,9 +70,9 @@ const CheckinSummary = () => {
     };
 
     const getAreaWithId = (name, type) => {
-        const area = formData[type].find(item => item.name.includes(name));
+        const area = formData && formData[type].find(item => item.name.includes(name));
 
-        return `${area.id}-${area.name}`;
+        return `${area?.id}-${area?.name}`;
     };
 
     return (
@@ -197,7 +197,7 @@ const CheckinSummary = () => {
                             </thead>
                             <tbody>
                                 {areas.map(data => {
-                                    const linkParams = ('province' in data) ? `${getAreaWithId(data.area, 'amphurs')}/${getAreaWithId(data.province, 'changwats')}` : `''/${getAreaWithId(data.area, 'changwats')}`;
+                                    const linkParams = ('province' in data) ? `${getAreaWithId(data.area, 'amphurs')}/${getAreaWithId(data.province, 'changwats')}` : `-/${getAreaWithId(data.area, 'changwats')}`;
 
                                     return (
                                     <tr className="font-thin" key={data.area}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Breadcrumb } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { Breadcrumb } from 'react-bootstrap';
 import { FaHandsHelping, FaPhoneSquareAlt, FaRegTimesCircle } from 'react-icons/fa'
 import api from '../../api'
 import { toShortTHDate, generateQueryString } from '../../utils'
@@ -23,17 +23,7 @@ const CheckinList = () => {
     const [patients, setPatients] = useState([]);
     const [pager, setPager] = useState(null);
     const [endpoint, setEndpoint] = useState('');
-    const [params, setParams] = useState(generateQueryString(initialFilters));
-
-    useEffect(() => {
-        if (amphur != '') {
-            setParams(generateQueryString({ ...initialFilters, amphur }));
-        }
-        
-        if (changwat) {
-            setParams(generateQueryString({ ...initialFilters, changwat }));
-        }
-    }, []);
+    const [params, setParams] = useState(generateQueryString(changwat ? { ...initialFilters, amphur: amphur != '-' ? amphur : '', changwat } : initialFilters));
 
     useEffect(() => {
         getCheckins(endpoint == '' ? `/api/checkins?page=${params}` : `${endpoint}${params}`);
