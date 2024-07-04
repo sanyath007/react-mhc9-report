@@ -11,7 +11,7 @@ function App() {
             <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<Dashboard />} />
                 <Route path="/checkins" element={<CheckinSummary />} />
-                <Route path="/checkins/follow-up/:amphur?/:changwat?" element={<CheckinList />} />
+                <Route path="/checkins/follow-up/:amphur?/:changwat?/:sdate?/:edate?" element={<CheckinList />} />
                 {/* other routes here... */}
 
                 <Route path="*" element={<div>404 Not Found</div>} />
