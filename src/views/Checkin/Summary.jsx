@@ -14,12 +14,8 @@ const CheckinSummary = () => {
     const { data: formData, isLoading } = useGetInitialFormDataQuery();
 
     useEffect(() => {
-        if (areaName == '') {
-            getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/changwats`);
-        } else {
-            getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/${areaName}/amphurs`);
-        }
-    }, [filters, areaName]);
+        onFetchCheckin()
+    }, []);
 
     const getCheckins = async (url) => {
         try {
@@ -42,6 +38,14 @@ const CheckinSummary = () => {
     const handleClearInputs = () => {
         setFilters({ sdate: moment().startOf('month').format('YYYY-MM-DD'), edate: moment().endOf('month').format('YYYY-MM-DD') });
         setAreaName('');
+    };
+
+    const onFetchCheckin = async () => {
+        if (areaName == '') {
+            getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/changwats`);
+        } else {
+            getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/${areaName}/amphurs`);
+        }
     };
 
     const onFetchCheckinWithAmphurs = async (changwat) => {
@@ -107,11 +111,19 @@ const CheckinSummary = () => {
                                 className="form-control text-xs"
                             />
                         </Col>
-                        <Col md={1} className="pl-0">
-                            <div className="h-[20px]"></div>
-                            <button type="button" className="btn btn-outline-danger btn-sm text-sm py-[3px]" onClick={handleClearInputs}>
-                                เคลียร์
-                            </button>
+                        <Col md={1} className="flex flex-row gap-1 pl-0">
+                            <div>
+                                <div className="h-[20px]"></div>
+                                <button type="button" className="btn btn-outline-primary btn-sm text-sm py-[3px]" onClick={onFetchCheckin}>
+                                    ตกลง
+                                </button>
+                            </div>
+                            <div>
+                                <div className="h-[20px]"></div>
+                                <button type="button" className="btn btn-outline-danger btn-sm text-sm py-[3px]" onClick={handleClearInputs}>
+                                    เคลียร์
+                                </button>
+                            </div>
                         </Col>
                     </Row>
                 </div>
