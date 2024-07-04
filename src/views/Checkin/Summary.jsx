@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, Col, Row } from 'react-bootstrap'
-import { FaBatteryEmpty, FaCloudRain, FaCommentDots, FaRegSmile, FaRegUser, FaUserInjured } from 'react-icons/fa'
+import { FaRegArrowAltCircleLeft, FaBatteryEmpty, FaCloudRain, FaCommentDots, FaRegSmile, FaRegUser, FaUserInjured } from 'react-icons/fa'
 import api from '../../api'
 import moment from 'moment'
 
 const CheckinSummary = () => {
-    const [filters, setFilters] = useState({ sdate: moment().format('YYYY-MM-DD'), edate: moment().format('YYYY-MM-DD') });
-    const [provinces, setProvinces] = useState([]);
+    const [filters, setFilters] = useState({ sdate: moment().startOf('month').format('YYYY-MM-DD'), edate: moment().endOf('month').format('YYYY-MM-DD') });
     const [sum, setSum] = useState({ st5: 0, depression: 0, sucide: 0, burnout: 0, total: 0, helped: 0 })
+    const [areas, setAreas] = useState([]);
+    const [areaName, setAreaName] = useState('');
 
     useEffect(() => {
-        getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/changwats`);
-    }, [filters]);
+        if (areaName == '') {
+            getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/changwats`);
+        } else {
+            getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/${areaName}/amphurs`);
+        }
+    }, [filters, areaName]);
 
     const getCheckins = async (url) => {
         try {
             const res = await api.get(url);
 
-            setProvinces(res.data);
+            setAreas(res.data);
             sumData(res.data);
         } catch (error) {
             console.log(error);
@@ -33,9 +38,13 @@ const CheckinSummary = () => {
     };
 
     const handleClearInputs = () => {
-        setFilters(initialFilters);
+        setFilters({ sdate: moment().startOf('month').format('YYYY-MM-DD'), edate: moment().endOf('month').format('YYYY-MM-DD') });
+        setAreaName('');
+    };
 
-        // onFilter(generateQueryString(initialFilters));
+    const onFetchCheckinWithAmphurs = async (changwat) => {
+        getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/${changwat}/amphurs`);
+        setAreaName(changwat);
     };
 
     const sumData = (data) => {
@@ -89,6 +98,12 @@ const CheckinSummary = () => {
                                 onChange={handleInputChange}
                                 className="form-control text-xs"
                             />
+                        </Col>
+                        <Col md={1} className="pl-0">
+                            <div className="h-[20px]"></div>
+                            <button type="button" className="btn btn-outline-danger btn-sm text-sm py-[3px]" onClick={handleClearInputs}>
+                                เคลียร์
+                            </button>
                         </Col>
                     </Row>
                 </div>
@@ -162,7 +177,7 @@ const CheckinSummary = () => {
                         <table className="table table-bordered table-striped text-sm">
                             <thead>
                                 <tr>
-                                    <th className="text-center">จังหวัด</th>
+                                    <th className="text-center">{areaName == '' ? 'เขตสุขภาพที่ 9' : areaName}</th>
                                     <th className="w-[12%] text-center">จำนวนผู้ประเมิน</th>
                                     <th className="w-[10%] text-center">ช่วยเหลือแล้ว</th>
                                     <th className="w-[10%] text-center">เครียดสูง</th>
@@ -173,9 +188,14 @@ const CheckinSummary = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {provinces.map(data => (
-                                    <tr className="font-thin" key={data.province}>
-                                        <td className="text-center">{data.province}</td>
+                                {areas.map(data => (
+                                    <tr className="font-thin" key={data.area}>
+                                        <td className="text-center">
+                                            {areaName == ''
+                                                ? <button type="button" onClick={() => onFetchCheckinWithAmphurs(data.area)}>{data.area}</button>
+                                                : data.area
+                                            }
+                                        </td>
                                         <td className="text-center">{data.total}</td>
                                         <td className="text-center">{data.helped}</td>
                                         <td className="text-center">{data.st5}</td>
@@ -197,6 +217,12 @@ const CheckinSummary = () => {
                                     </tr>
                             </tbody>
                         </table>
+
+                        {areaName != '' && (
+                            <button type="button" className="btn btn-outline-secondary btn-sm text-xs flex flex-row items-center gap-1" onClick={() => setAreaName('')}>
+                                <FaRegArrowAltCircleLeft />เขตสุขภาพที่ 9
+                            </button>
+                        )}
                     </Col>
                 </Row>
             </div>
