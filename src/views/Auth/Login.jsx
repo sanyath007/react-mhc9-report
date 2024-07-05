@@ -9,7 +9,6 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (values, formik) => {
-        console.log(values);
         try {
             const res = await api.post('/api/login', values);
 
@@ -22,9 +21,9 @@ const Login = () => {
 
     return (
         <div className="container flex flex-col justify-center items-center min-h-[100vh]">
-            <div className="bg-white w-[420px] h-[360px] border rounded-lg p-4 flex flex-col justify-center items-center gap-2">
-                <h1 className="text-3xl font-bold">ระบบ Follow-up</h1>
-                <div className="mt-4">
+            <div className="login-box bg-white w-[360px] min-h-[360px] rounded-lg px-4 py-4 flex flex-col justify-center items-center">
+                <h1 className="text-3xl font-bold mt-4">ระบบ Follow-up</h1>
+                <div className="w-[100%] my-4">
                     <Formik
                         initialValues={{
                             email: 'sanyath007@gmail.com',
@@ -36,39 +35,58 @@ const Login = () => {
                             <Form>
                                 <Row className="mb-2">
                                     <Col>
-                                        <label htmlFor="">Email :</label>
                                         <input
                                             type="text"
                                             name="email"
                                             value={formik.values.email}
                                             onChange={formik.handleChange}
                                             className="form-control"
+                                            placeholder="Email"
                                         />
                                     </Col>
                                 </Row>
-                                <Row className="mb-2">
+                                <Row className="mb-4">
                                     <Col>
-                                        <label htmlFor="">Password :</label>
                                         <input
                                             type="password"
                                             name="password"
                                             value={formik.values.password}
                                             onChange={formik.handleChange}
                                             className="form-control"
+                                            placeholder="Password"
                                         />
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <button type="submit" className="btn btn-outline-primary">
-                                            Sign in
-                                        </button>
-                                    </Col>
-                                </Row>
+
+                                <div className="d-grid mb-2">
+                                    <button type="submit" className="btn btn-outline-primary">
+                                        Sign in
+                                    </button>
+                                </div>
+
+                                <div className="flex flex-row justify-between mb-4 px-2">
+                                    <div className="flex flex-row items-center gap-1">
+                                        <input type="checkbox" name="" /> จำรหัสผ่าน
+                                    </div>
+
+                                    <a href="#" className="text-primary">ลืมรหัสผ่าน</a>
+                                </div>
+
+                                <hr />
+
+                                <div className="d-grid mt-4">
+                                    <button type="submit" className="btn btn-outline-secondary">
+                                        Register
+                                    </button>
+                                </div>
                             </Form>
                         )}
                     </Formik>
                 </div>
+            </div>
+
+            <div className="mt-4 text-gray-600 text-sm">
+                <a href="https:www.mhc9dmh.com">©ศูนย์สุขภาพจิตที่ 9</a> | โดย สัญญา ธรรมวงษ์
             </div>
         </div>
     )
