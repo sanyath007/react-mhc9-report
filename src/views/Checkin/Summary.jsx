@@ -246,7 +246,7 @@ const CheckinSummary = () => {
                                     <td className="text-center">{sum.sucide}</td>
                                     <td className="text-center">{sum.burnout}</td>
                                     <td className="text-center"></td>
-                                    </tr>
+                                </tr>
                             </tbody>
                         </table>
 
