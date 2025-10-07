@@ -1,21 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { User, Settings, LogOut, Menu, X } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useGetUserDetailsQuery } from '../features/services/authApi';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const menuRef = useRef(null);
-    const { user: currentUser } = useAuth();
-
-    // ตัวอย่างข้อมูลผู้ใช้
-    console.log(currentUser);
-
-    const user = {
-        name: 'สมชาย ใจดี',
-        email: 'somchai@example.com',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=somchai'
-    };
+    // const { user: currentUser } = useAuth();
+    const { data: user, isFetching } = useGetUserDetailsQuery('userDetails', { pollingInterval: 900000 });
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -74,13 +67,13 @@ const Navbar = () => {
                                 className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-all duration-200 group"
                             >
                                 <img
-                                    src={user.avatar}
-                                    alt={user.name}
-                                    className="w-10 h-10 rounded-full ring-2 ring-gray-200 group-hover:ring-blue-400 transition-all duration-200"
+                                    src={`${import.meta.env.VITE_IMG_URL}/uploads/${user?.employee?.avatar_url}`}
+                                    alt={user?.name}
+                                    className="w-10 h-10 rounded-full ring-2 ring-gray-200 group-hover:ring-blue-400 transition-all duration-200 object-cover"
                                 />
                                 <div className="hidden lg:block text-left">
-                                    <p className="text-sm font-semibold text-gray-800">{user.name}</p>
-                                    <p className="text-xs text-gray-500">{user.email}</p>
+                                    <p className="text-sm font-semibold text-gray-800">{user?.name}</p>
+                                    <p className="text-xs text-gray-500">{user?.email}</p>
                                 </div>
                                 <svg
                                     className={`w-4 h-4 text-gray-600 transition-transform duration-200 ${
