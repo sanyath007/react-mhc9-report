@@ -38,8 +38,9 @@ const Footer = () => {
                                 <h3 className="text-xl font-bold">MyApp</h3>
                             </div>
                             <p className="text-gray-300 text-sm leading-relaxed">
-                                ระบบบริการดิจิทัลเพื่อพัฒนาทักษะและส่งเสริมคุณภาพชีวิต 
-                                พัฒนาโดยศูนย์สุขภาพจิตที่ 7 กรมสุขภาพจิต กระทรวงสาธารณสุข
+                                ระบบสารสนเทศเพื่อการจัดการสำหรับการติดตาม
+                                ให้ความช่วยเหลือกลุ่มผู้สัมผัสปัจจัยเสี่ยงสุขภาพจิตจาก
+                                ระบบ Mental Health Check In เขตสุขภาพที่ 9
                             </p>
                             <div className="flex space-x-3">
                             <a 
