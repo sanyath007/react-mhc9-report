@@ -4,15 +4,24 @@ import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import api from '../../api'
+import { useAuth } from '../../contexts/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = async (values, formik) => {
         try {
             const res = await api.post('/api/login', values);
 
-            localStorage.setItem("access_token", res.data.success.token);
+            if (!res.data.success === true) {  
+                alert('Login failed!');
+                return;
+            }
+
+            localStorage.setItem("access_token", res.data.token);
+            login(res.data.user);
+
             navigate('/')
         } catch (error) {
             console.log(error);
