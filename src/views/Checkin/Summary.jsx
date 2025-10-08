@@ -7,11 +7,11 @@ import moment from 'moment'
 import { useGetInitialFormDataQuery } from '../../features/services/checkinApi'
 
 const CheckinSummary = () => {
+    const { data: formData, isLoading } = useGetInitialFormDataQuery();
     const [filters, setFilters] = useState({ sdate: moment().startOf('month').format('YYYY-MM-DD'), edate: moment().endOf('month').format('YYYY-MM-DD') });
     const [sum, setSum] = useState({ st5: 0, depression: 0, sucide: 0, burnout: 0, total: 0, helped: 0 })
     const [areas, setAreas] = useState([]);
     const [areaName, setAreaName] = useState('');
-    const { data: formData, isLoading } = useGetInitialFormDataQuery();
 
     useEffect(() => {
         onFetchCheckin()
@@ -26,6 +26,32 @@ const CheckinSummary = () => {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const getAreaWithId = (name, type) => {
+        const area = formData && formData[type].find(item => item.name.includes(name));
+
+        return `${area?.id}-${area?.name}`;
+    };
+
+    const sumData = (data) => {
+        let total = 0;
+        let st5 = 0;
+        let depression = 0;
+        let sucide = 0;
+        let burnout = 0;
+        let helped = 0;
+
+        data.forEach(item => {
+            total   = total + item.total;
+            st5     = st5 + item.st5;
+            depression = depression + item.depression;
+            sucide  = sucide + item.sucide;
+            burnout = burnout + item.burnout;
+            helped = helped + item.helped;
+        });
+
+        setSum({ total, st5, depression, sucide, burnout, helped });
     };
 
     const handleInputChange = (e) => {
@@ -53,30 +79,9 @@ const CheckinSummary = () => {
         setAreaName(changwat);
     };
 
-    const sumData = (data) => {
-        let total = 0;
-        let st5 = 0;
-        let depression = 0;
-        let sucide = 0;
-        let burnout = 0;
-        let helped = 0;
-
-        data.forEach(item => {
-            total   = total + item.total;
-            st5     = st5 + item.st5;
-            depression = depression + item.depression;
-            sucide  = sucide + item.sucide;
-            burnout = burnout + item.burnout;
-            helped = helped + item.helped;
-        });
-
-        setSum({ total, st5, depression, sucide, burnout, helped });
-    };
-
-    const getAreaWithId = (name, type) => {
-        const area = formData && formData[type].find(item => item.name.includes(name));
-
-        return `${area?.id}-${area?.name}`;
+    const onFetchCheckinWithTambons = async (changwat, amphur) => {
+        getCheckins(`/api/checkins/${filters.sdate}/${filters.edate}/${changwat}/${amphur}/tambons`);
+        setAreaName(amphur);
     };
 
     return (
@@ -89,6 +94,7 @@ const CheckinSummary = () => {
             <div className="content">
                 <h1 className="text-2xl font-bold mb-2">Mental Health Checkin</h1>
 
+                {/* Filtering Box */}
                 <div className="border rounded-md p-3 my-2 flex justify-center">
                     <Row className="flex justify-center w-full">
                         <Col md={4} className="text-sm mb-2">
@@ -127,7 +133,9 @@ const CheckinSummary = () => {
                         </Col>
                     </Row>
                 </div>
+                {/* End Filtering Box */}
 
+                {/* Stat Card */}
                 <Row className='my-3'>
                     <Col md={6} className="mb-3">
                         <div className="rounded-md bg-blue-500 w-full h-[120px] p-4 flex flex-row justify-between items-center">
@@ -192,6 +200,9 @@ const CheckinSummary = () => {
                         </div>
                     </Col>
                 </Row>
+                {/* End Stat Card */}
+
+                {/* Data Table */}
                 <Row>
                     <Col>
                         <table className="table table-bordered table-striped text-sm">
@@ -257,6 +268,8 @@ const CheckinSummary = () => {
                         )}
                     </Col>
                 </Row>
+                {/* End Data Table */}
+
             </div>
         </div>
     )
