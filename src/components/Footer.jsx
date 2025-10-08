@@ -35,12 +35,12 @@ const Footer = () => {
                             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                                 <Globe className="w-6 h-6" />
                             </div>
-                                <h3 className="text-xl font-bold">MyApp</h3>
+                                <h3 className="text-xl font-bold">ศูนย์สุขภาพจิตที่ 9</h3>
                             </div>
                             <p className="text-gray-300 text-sm leading-relaxed">
                                 ระบบสารสนเทศเพื่อการจัดการสำหรับการติดตาม
                                 ให้ความช่วยเหลือกลุ่มผู้สัมผัสปัจจัยเสี่ยงสุขภาพจิตจาก
-                                ระบบ Mental Health Check In เขตสุขภาพที่ 9
+                                Mental Health Check In เขตสุขภาพที่ 9
                             </p>
                             <div className="flex space-x-3">
                             <a 
