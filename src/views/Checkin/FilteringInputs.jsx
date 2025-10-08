@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
+import { Filter } from 'lucide-react'
 import { generateQueryString } from '../../utils'
 import { useGetInitialFormDataQuery } from '../../features/services/checkinApi';
 
@@ -58,8 +59,12 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
     };
 
     return (
-        <div className="border rounded-md p-3 my-2">
-            <p className="font-bold mb-2">กรองข้อมูล</p>
+        <>
+            <p className="font-bold mb-2 flex items-center">
+                <Filter className="w-5 h-5 mr-2 text-gray-600" />
+                กรองข้อมูล
+            </p>
+
             <Row className="mb-2">
                 <Col md={4} className="text-sm mb-2">
                     <label htmlFor="">จังหวัด :</label>
@@ -157,7 +162,7 @@ const FilteringInputs = ({ initialFilters, onFilter }) => {
                     </button>
                 </Col>
             </Row>
-        </div>
+        </>
     )
 }
 

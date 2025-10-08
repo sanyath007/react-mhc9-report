@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Breadcrumb } from 'react-bootstrap';
 import { FaHandsHelping, FaPhoneSquareAlt, FaRegTimesCircle } from 'react-icons/fa'
+import { User, Settings, LogOut, Menu, X, MapPin, Phone, Mail, Facebook, Globe, ExternalLink, Activity, Users, TrendingUp, AlertTriangle, Heart, Brain, Smile, Calendar, BarChart3, PieChart, Download, Filter } from 'lucide-react'
+import moment from 'moment';
 import api from '../../api'
 import { toShortTHDate, generateQueryString } from '../../utils'
 import Pagination from '../../components/Pagination';
-import moment from 'moment';
 import FilteringInputs from './FilteringInputs';
 import Assessment from './Assessment';
 
@@ -63,89 +64,99 @@ const CheckinList = () => {
     };
 
     return (
-        <div className="container py-3 px-4 w-full bg-white border">
-            <Breadcrumb>
-                <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-                <Breadcrumb.Item href="/checkins">
-                    Mental Health Checkin
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>รายการติดตาม</Breadcrumb.Item>
-            </Breadcrumb>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+            {/* Header Section */}
+            <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    {/* <Breadcrumb>
+                        <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+                        <Breadcrumb.Item href="/checkins">
+                            Mental Health Checkin
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item active>รายการติดตาม</Breadcrumb.Item>
+                    </Breadcrumb> */}
 
-            <div className="content">
-                <h1 className="text-2xl font-bold mb-2">รายการติดตาม</h1>
+                    <h1 className="text-center text-2xl font-bold mb-3">รายการติดตาม</h1>
 
-                <FilteringInputs initialFilters={filters} onFilter={(queryStr) => setParams(queryStr)} />
+                    <FilteringInputs initialFilters={filters} onFilter={(queryStr) => setParams(queryStr)} />
+                </div>
+            </div>
 
-                <table className="table table-bordered text-xs">
-                    <thead>
-                        <tr>
-                            <th className="w-[4%] text-center">#</th>
-                            <th className="w-[4%] text-center">ช่วยเหลือ</th>
-                            <th className="w-[8%] text-center">วันที่ประเมิน</th>
-                            <th>ชื่อ-สกุล</th>
-                            <th className="w-[4%] text-center">อายุ</th>
-                            <th className="w-[4%] text-center">เพศ</th>
-                            <th className="w-[20%] text-center">ที่อยู่</th>
-                            <th className="w-[15%] text-center">กลุ่มรายงาน</th>
-                            <th className="w-[20%] text-center">ผลการประเมิน</th>
-                            {/* <th className="w-[4%] text-center">c_trace</th>
-                            <th className="w-[4%] text-center">trace</th>
-                            <th className="w-[4%] text-center">ok</th> */}
-                            <th className="w-[6%] text-center">ติดตาม</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {patients && patients.map((patient, index) => (
-                            <tr className="font-thin" key={patient.id}>
-                                <td className="text-center">{pager.from+index}</td>
-                                <td className="text-center">
-                                    <div className="flex justify-center">
-                                        {patient.ok === '1'
-                                            ? <span className="text-success"><FaHandsHelping size={'20px'} /></span>
-                                            : <span className="text-danger"><FaRegTimesCircle size={'16px'} /></span>
-                                        }
-                                    </div>
-                                </td>
-                                <td className="text-center">
-                                    {toShortTHDate(moment(patient.reg_date).format('YYYY-MM-DD'))} {moment(patient.reg_date).format('HH:MM')} น.
-                                </td>
-                                <td>
-                                    <p className="font-bold">{patient.risk_name+ ' ' +patient.risk_surname}</p>
-                                    <p className="flex flex-row gap-1 items-center text-primary"><FaPhoneSquareAlt size={'12px'} /> {patient.risk_tel}</p>
-                                </td>
-                                <td className="text-center">{patient.age}</td>
-                                <td className="text-center">{patient.gender}</td>
-                                <td>{patient.address+ ' อ.' +patient.name_amphure+ ' จ.' +patient.name_province}</td>
-                                <td>{getRiskGroup(patient)}</td>
-                                <td className="text-center">
-                                    <Assessment assessment={patient} />
-                                </td>
-                                {/* <td className="text-center">{patient.c_trace}</td>
-                                <td className="text-center">{patient.trace}</td>
-                                <td className="text-center">{patient.ok}</td> */}
-                                <td className="text-center">
-                                    <a 
-                                        href={`https://checkin.dmh.go.th/trace/index.php?id=${patient.id}&date_data=2024-02-07%2020:51:07&risk_name=${patient.risk_name}&risk_surname=${patient.risk_surname}&address=${patient.address}&amp_name=${patient.name_amphure}&dis_name_th=${patient.name_district}&province=${patient.name_province}&age=${patient.age}&risk_group=${getRiskGroup(patient)}&risk_tel=${patient.risk_tel}&2q=&9q=&8q=&burnout=`}
-                                        className="btn btn-primary btn-sm text-xs"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        ติดตาม
-                                    </a>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Data Table */}
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <Users className="w-5 h-5 mr-2 text-green-600" />
+                        รายชื่อผู้ประเมินสุขภาพจิต
+                    </h3>
 
-                {pager && (
-                    <div className="flex flex-row items-center justify-between">
-                        <div className="text-xs font-thin">หน้าที่ {pager.currentPage} / {pager.lastPage}</div>
-                        <div className="text-xs font-thin">จำนวน {pager.total} รายการ</div>
-                        <Pagination pager={pager} onPageClick={(url) => setEndpoint(url)} />
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="border-b border-gray-200">
+                                    <th className="w-[4%] text-center py-3 px-1 text-sm font-semibold text-gray-700">#</th>
+                                    <th className="w-[4%] text-center py-3 px-1 text-sm font-semibold text-gray-700">ช่วยเหลือ</th>
+                                    <th className="w-[10%] text-center py-3 px-1 text-sm font-semibold text-gray-700">วันที่ประเมิน</th>
+                                    <th>ชื่อ-สกุล</th>
+                                    <th className="w-[4%] text-center py-3 px-1 text-sm font-semibold text-gray-700">อายุ</th>
+                                    <th className="w-[4%] text-center py-3 px-1 text-sm font-semibold text-gray-700">เพศ</th>
+                                    <th className="w-[20%] text-center py-3 px-1 text-sm font-semibold text-gray-700">ที่อยู่</th>
+                                    <th className="w-[15%] text-center py-3 px-1 text-sm font-semibold text-gray-700">กลุ่มรายงาน</th>
+                                    <th className="w-[15%] text-center py-3 px-1 text-sm font-semibold text-gray-700">ผลการประเมิน</th>
+                                    <th className="w-[6%] text-center py-3 px-1 text-sm font-semibold text-gray-700">ติดตาม</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {patients && patients.map((patient, index) => (
+                                    <tr key={patient.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td className="py-2 px-1 text-center">{pager.from+index}</td>
+                                        <td className="py-2 px-1 text-center">
+                                            <div className="flex justify-center">
+                                                {patient.ok === '1'
+                                                    ? <span className="text-success"><FaHandsHelping size={'20px'} /></span>
+                                                    : <span className="text-danger"><FaRegTimesCircle size={'16px'} /></span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td className="py-2 px-1 text-center text-sm">
+                                            {toShortTHDate(moment(patient.reg_date).format('YYYY-MM-DD'))} {moment(patient.reg_date).format('HH:MM')} น.
+                                        </td>
+                                        <td className="py-2 px-1 text-sm">
+                                            <p className="font-bold">{patient.risk_name+ ' ' +patient.risk_surname}</p>
+                                            <p className="flex flex-row gap-1 items-center text-primary"><FaPhoneSquareAlt size={'12px'} /> {patient.risk_tel}</p>
+                                        </td>
+                                        <td className="py-2 px-1 text-center text-sm">{patient.age}</td>
+                                        <td className="py-2 px-1 text-center text-sm">{patient.gender}</td>
+                                        <td className="py-2 px-1 text-sm">{patient.address+ ' อ.' +patient.name_amphure+ ' จ.' +patient.name_province}</td>
+                                        <td className="py-2 px-1 text-sm">{getRiskGroup(patient)}</td>
+                                        <td className="py-2 px-1 text-center text-sm">
+                                            <Assessment assessment={patient} />
+                                        </td>
+                                        <td className="py-2 px-1 text-center">
+                                            <a 
+                                                href={`https://checkin.dmh.go.th/trace/index.php?id=${patient.id}&date_data=2024-02-07%2020:51:07&risk_name=${patient.risk_name}&risk_surname=${patient.risk_surname}&address=${patient.address}&amp_name=${patient.name_amphure}&dis_name_th=${patient.name_district}&province=${patient.name_province}&age=${patient.age}&risk_group=${getRiskGroup(patient)}&risk_tel=${patient.risk_tel}&2q=&9q=&8q=&burnout=`}
+                                                className="btn btn-primary btn-sm text-xs"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                ติดตาม
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                )}
+
+                    {pager && (
+                        <div className="flex flex-row items-center justify-between mt-3">
+                            <div className="text-sm font-thin">หน้าที่ {pager.currentPage} / {pager.lastPage}</div>
+                            <div className="text-sm font-thin">จำนวน {pager.total} รายการ</div>
+                            <Pagination pager={pager} onPageClick={(url) => setEndpoint(url)} />
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )
